@@ -3,6 +3,8 @@ members = [
     "utils",
     "day_1_1",
     "day_1_2",
+    "day_2_1",
+    "day_2_2",
 ]
 
 [workspace.package]
