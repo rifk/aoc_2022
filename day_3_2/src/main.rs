@@ -18,11 +18,7 @@ fn group_to_priority(group: &[&str]) -> i32 {
     let badge = group
         .iter()
         .map(|l| l.chars().collect::<HashSet<char>>())
-        .reduce(|acc, item| {
-            acc.intersection(&item)
-                .map(|c| c.clone())
-                .collect::<HashSet<char>>()
-        })
+        .reduce(|acc, item| acc.intersection(&item).copied().collect::<HashSet<char>>())
         .unwrap()
         .into_iter()
         .next()
