@@ -21,6 +21,8 @@ members = [
     "day_9_2",
     "day_10_1",
     "day_10_2",
+    "day_11_1",
+    "day_11_2",
 ]
 
 [workspace.package]
