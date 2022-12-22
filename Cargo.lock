@@ -190,6 +190,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "day_18_1"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "utils",
+]
+
+[[package]]
+name = "day_18_2"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "utils",
+]
+
+[[package]]
 name = "day_1_1"
 version = "0.1.0"
 dependencies = [
