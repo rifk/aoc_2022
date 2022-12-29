@@ -15,13 +15,13 @@ impl Math {
     fn eval(&self, monkeys: &HashMap<String, Monkey>) -> Self {
         let (left, right) = match self {
             Math::Val(v) => return Math::Val(*v),
-            Math::Add(left,right) => (left,right),
-            Math::Minus(left,right) => (left,right),
-            Math::Div(left,right) => (left,right),
-            Math::Mult(left,right) => (left,right),
-            _ => panic!()
+            Math::Add(left, right) => (left, right),
+            Math::Minus(left, right) => (left, right),
+            Math::Div(left, right) => (left, right),
+            Math::Mult(left, right) => (left, right),
+            _ => panic!(),
         };
-        if left == "humn" || right  == "humn" {
+        if left == "humn" || right == "humn" {
             return Math::Unknown;
         }
 
@@ -44,20 +44,20 @@ impl Math {
             }
         };
         match self {
-            Math::Add(_,_) => Math::Val(left+right),
-            Math::Minus(_,_) => Math::Val(left-right),
-            Math::Div(_,_) => Math::Val(left/right),
-            Math::Mult(_,_) => Math::Val(left*right),
+            Math::Add(_, _) => Math::Val(left + right),
+            Math::Minus(_, _) => Math::Val(left - right),
+            Math::Div(_, _) => Math::Val(left / right),
+            Math::Mult(_, _) => Math::Val(left * right),
             _ => panic!(),
         }
     }
-    
+
     fn eval_unknown(&self, monkeys: &HashMap<String, Monkey>, eq: i64) -> i64 {
-        let (left,right) = match self {
-            Math::Add(left,right) => (left,right),
-            Math::Minus(left,right) => (left,right),
-            Math::Div(left,right) => (left,right),
-            Math::Mult(left,right) => (left,right),
+        let (left, right) = match self {
+            Math::Add(left, right) => (left, right),
+            Math::Minus(left, right) => (left, right),
+            Math::Div(left, right) => (left, right),
+            Math::Mult(left, right) => (left, right),
             _ => panic!(),
         };
         let left_m = monkeys.get(left).unwrap();
@@ -67,7 +67,7 @@ impl Math {
         if left == "humn" {
             let v = match right_ev {
                 Math::Val(v) => v,
-                _=> panic!(),
+                _ => panic!(),
             };
             return match self {
                 Math::Add(_, _) => eq - v,
@@ -75,11 +75,11 @@ impl Math {
                 Math::Div(_, _) => eq * v,
                 Math::Mult(_, _) => eq / v,
                 _ => panic!(),
-            }
+            };
         } else if right == "humn" {
             let v = match left_ev {
                 Math::Val(v) => v,
-                _=> panic!(),
+                _ => panic!(),
             };
             return match self {
                 Math::Add(_, _) => eq - v,
@@ -87,26 +87,32 @@ impl Math {
                 Math::Div(_, _) => v / eq,
                 Math::Mult(_, _) => eq / v,
                 _ => panic!(),
-            }
+            };
         }
         let (unknown, val) = match (&left_ev, &right_ev) {
-            (Math::Unknown, Math::Val(v)) => (left_m, match self {
-                Math::Add(_, _) => eq - v,
-                Math::Minus(_, _) => eq + v,
-                Math::Div(_, _) => eq * v,
-                Math::Mult(_, _) => eq / v,
-            _ => panic!(),
-            }),
-            (Math::Val(v), Math::Unknown) => (right_m, match self {
-                Math::Add(_, _) => eq - v,
-                Math::Minus(_, _) => v - eq,
-                Math::Div(_, _) => v / eq,
-                Math::Mult(_, _) => eq / v,
-            _ => panic!(),
-            }),
+            (Math::Unknown, Math::Val(v)) => (
+                left_m,
+                match self {
+                    Math::Add(_, _) => eq - v,
+                    Math::Minus(_, _) => eq + v,
+                    Math::Div(_, _) => eq * v,
+                    Math::Mult(_, _) => eq / v,
+                    _ => panic!(),
+                },
+            ),
+            (Math::Val(v), Math::Unknown) => (
+                right_m,
+                match self {
+                    Math::Add(_, _) => eq - v,
+                    Math::Minus(_, _) => v - eq,
+                    Math::Div(_, _) => v / eq,
+                    Math::Mult(_, _) => eq / v,
+                    _ => panic!(),
+                },
+            ),
             _ => panic!("{:?}, {:?}", left_ev, right_ev),
         };
-        unknown.math.eval_unknown(monkeys,val)
+        unknown.math.eval_unknown(monkeys, val)
     }
 }
 
@@ -125,11 +131,11 @@ fn main() -> Result<()> {
 }
 
 fn humn_val(monkeys: HashMap<String, Monkey>, root: Monkey) -> i64 {
-    let (left,right) = match root.math {
-        Math::Add(left,right) => (left,right),
-        Math::Minus(left,right) => (left,right),
-        Math::Div(left,right) => (left,right),
-        Math::Mult(left,right) => (left,right),
+    let (left, right) = match root.math {
+        Math::Add(left, right) => (left, right),
+        Math::Minus(left, right) => (left, right),
+        Math::Div(left, right) => (left, right),
+        Math::Mult(left, right) => (left, right),
         _ => panic!(),
     };
     let left_m = monkeys.get(&left).unwrap();
@@ -141,7 +147,7 @@ fn humn_val(monkeys: HashMap<String, Monkey>, root: Monkey) -> i64 {
         (Math::Val(v), Math::Unknown) => (right_m, v),
         _ => panic!(),
     };
-    unknown.math.eval_unknown(&monkeys,val)
+    unknown.math.eval_unknown(&monkeys, val)
 }
 
 fn line_to_monkey(line: &str) -> (String, Monkey) {
